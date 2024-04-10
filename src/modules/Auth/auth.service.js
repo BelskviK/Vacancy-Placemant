@@ -11,7 +11,6 @@ export async function registerUser(body) {
     email: body.email,
   });
 
-  // es ras akeTebs
   if (body.role) {
     user.role = body.role;
   }
