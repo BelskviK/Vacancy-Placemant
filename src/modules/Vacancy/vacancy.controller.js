@@ -49,16 +49,6 @@ class VacancyController {
     }
   }
 
-  //user adds vacancy to favorites
-  async addFavorite(req, res) {
-    try {
-      const vacancy = await addFavorite(req.body, req.user.userId);
-      res.status(202).json(vacancy);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  }
-
   //get favorite vacancies for current user
   async getFavorites(req, res) {
     try {
