@@ -3,6 +3,9 @@ import {
   deleteVacancy,
   applyVacancy,
   getVacancies,
+  addFavorite,
+  removeFavorite,
+  getFavorites,
 } from "./vacancy.service.js";
 
 class VacancyController {
@@ -25,6 +28,7 @@ class VacancyController {
       res.status(400).json({ message: error.message });
     }
   }
+
   //user applies vacancy to
   async applyVacancy(req, res) {
     try {
@@ -35,6 +39,7 @@ class VacancyController {
     }
   }
 
+  //Get Favorite Vacancies for Current User
   async getVacancies(req, res) {
     try {
       const vacancy = await getVacancies(req.query);
@@ -43,6 +48,45 @@ class VacancyController {
       res.status(400).json({ message: error.message });
     }
   }
-}
 
+  //user adds vacancy to favorites
+  async addFavorite(req, res) {
+    try {
+      const vacancy = await addFavorite(req.body, req.user.userId);
+      res.status(202).json(vacancy);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  //get favorite vacancies for current user
+  async getFavorites(req, res) {
+    try {
+      const vacancies = await getFavorites(req.user.userId);
+      res.status(201).json(vacancies);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  //user adds vacancy to favorites
+  async addFavorite(req, res) {
+    try {
+      const vacancy = await addFavorite(req.body, req.user.userId);
+      res.status(201).json(vacancy);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  //user remove vacancy from favorites
+  async removeFavorite(req, res) {
+    try {
+      const vacancy = await removeFavorite(req.body, req.user.userId);
+      res.status(200).json(vacancy);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+}
 export default new VacancyController();

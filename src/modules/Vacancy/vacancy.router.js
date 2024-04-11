@@ -17,6 +17,14 @@ VacancyRouter.post(
   VacancyController.createVacancy
 );
 
+// user remove vacancy from favorires
+VacancyRouter.delete(
+  "/favorites",
+  checkAuth(["user"]),
+  validate,
+  VacancyController.removeFavorite
+);
+
 //recruiter deletes vacancie
 VacancyRouter.delete(
   "/:vacancyId",
@@ -24,7 +32,7 @@ VacancyRouter.delete(
   VacancyController.deleteVacancy
 );
 
-//everyone search for vacancies
+//everyone search for vacancies with filter
 VacancyRouter.get("/", validate, VacancyController.getVacancies);
 
 // user applies
@@ -33,4 +41,20 @@ VacancyRouter.put(
   checkAuth(["user"]),
   validate,
   VacancyController.applyVacancy
+);
+
+//Get Favorite Vacancies for Current User
+VacancyRouter.get(
+  "/favorites",
+  checkAuth(["user"]),
+  validate,
+  VacancyController.getFavorites
+);
+
+// user adds in favorires
+VacancyRouter.put(
+  "/favorites",
+  checkAuth(["user"]),
+  validate,
+  VacancyController.addFavorite
 );

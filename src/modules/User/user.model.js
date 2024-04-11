@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
         ref: "Vacancie",
       },
     ],
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vacancie",
+      },
+    ],
   },
   {
     versionKey: false,
