@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
-import User from "../User/user.model.js";
+import {
+  saveVacancyIduser,
+  deleteOneVacancyIdUser,
+  deleteOneVacancyIdUserFav,
+} from "../../middlewares/vacancySchema.middleware.js";
 
-const VacancySchema = new mongoose.Schema(
+export const VacancySchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -30,29 +34,10 @@ const VacancySchema = new mongoose.Schema(
     versionKey: false,
   }
 );
+//reqruiter relation
 
-// assigne vacancy._id to user.vacancies[] when recruiter creates vacancy
-VacancySchema.post("save", { document: true }, async function (doc, next) {
-  const user = await User.findById(doc.owner);
-  if (!user) {
-    throw new Error("User not found");
-  }
-  user.vacancies.push(doc._id);
-  await user.save();
-  next();
-});
-
-// remove vacancy._id to user.vacancies[] when recruiter deletes vacancy
-VacancySchema.post("deleteOne", { document: true }, async function (doc, next) {
-  const user = await User.findById(doc.owner);
-  if (!user) {
-    throw new Error("User not found");
-  }
-  user.vacancies = user.vacancies.filter(
-    (vacancie) => vacancie.toString() !== doc._id.toString()
-  );
-  await user.save();
-  next();
-});
+VacancySchema.post("save", { document: true }, saveVacancyIduser);
+VacancySchema.post("deleteOne", { document: true }, deleteOneVacancyIdUser);
+VacancySchema.post("deleteOne", { document: true }, deleteOneVacancyIdUserFav);
 
 export default mongoose.model("Vacancy", VacancySchema);
